@@ -1,4 +1,4 @@
-package org.jacoco.examples.maven.java;
+package org.jacoco.examples.java.gradle;
 
 public class HelloWorld {
 	
