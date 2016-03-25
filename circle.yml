@@ -1,4 +1,4 @@
 test:
     post:
         - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
-        - pip install --user codecov && codecov
+        - bash <(curl -s https://codecov.io/bash)
