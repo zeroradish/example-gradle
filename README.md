@@ -31,7 +31,7 @@ Add to your `circle.yml` file.
 test:
     post:
         - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
-        - pip install --user codecov && codecov
+        - bash <(curl -s https://codecov.io/bash)
 ```
 
 > Another option is our [Bash uploader][7]
@@ -43,9 +43,7 @@ Add to your `.travis.yml` file.
 test:
     post:
         - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
-        - pip install --user codecov && codecov:
-            environment:
-                CODECOV_TOKEN: uuid-repo-token
+        - bash <(curl -s https://codecov.io/bash) -t uuid-repo-token
 ```
 
 View source and learn more about [Codecov Global Uploader][4]
