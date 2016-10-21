@@ -48,6 +48,73 @@ test:
 
 View source and learn more about [Codecov Global Uploader][4]
 
+## Multi-module projects (exmple with Travis CI)
+Update your parent (root) `build.gradle`:
+```groovy
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'jacoco'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+
+        maven { url "http://repo1.maven.org/maven2/" }
+    }
+}
+
+subprojects {
+    dependencies {
+        ...        
+    }
+
+    test.useTestNG()
+}
+
+task codeCoverageReport(type: JacocoReport) {
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+    subprojects.each {
+        sourceSets it.sourceSets.main
+    }
+
+    reports {
+        xml.enabled true
+        xml.destination "${buildDir}/reports/jacoco/report.xml"
+        html.enabled false
+        csv.enabled false
+    }
+}
+
+codeCoverageReport.dependsOn {
+    subprojects*.test
+}
+```
+
+Update your `.travis.yml` file:
+```yml
+language: java
+jdk:
+  - oraclejdk8
+before_script:
+  - chmod +x gradlew
+script:
+  - ./gradlew check
+  - ./gradlew codeCoverageReport
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+```
+
+No need to have anything else report-related in child modules 
+
+[Credits for multi-module][8]
+
+
 [1]: https://codecov.io/
 [2]: https://twitter.com/codecov
 [3]: mailto:hello@codecov.io
@@ -55,3 +122,4 @@ View source and learn more about [Codecov Global Uploader][4]
 [5]: http://gradle.org/
 [6]: https://docs.gradle.org/current/userguide/jacoco_plugin.html
 [7]: https://github.com/codecov/codecov-bash
+[8]: https://csiebler.github.io/blog/2014/02/09/multi-project-code-coverage-using-gradle-and-jacoco/
