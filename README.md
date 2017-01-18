@@ -1,54 +1,19 @@
-Codecov Java Example
-====================
+[Codecov][1] Gradle Example
+===========================
 
-| [https://codecov.io][1] | [@codecov][2] | [hello@codecov.io][3] |
-| ----------------------- | ------------- | --------------------- |
+1. Add Jacoco Plugin to your `build.gradle`. [See here](https://github.com/codecov/example-gradle/blob/master/build.gradle#L5
+1. Set Jacoco to export xml. [See here](https://github.com/codecov/example-gradle/blob/master/build.gradle#L18-L23)
+1. Execute your tests as normal
+1. Call `if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi` to generate report. [See here](https://github.com/codecov/example-gradle/blob/65f88382659cf17c8693c3079941a12c8d004f03/circle.yml#L3)
+1. Call `bash <(curl -s https://codecov.io/bash)` to upload reports to Codecov. [See here](https://github.com/codecov/example-gradle/blob/65f88382659cf17c8693c3079941a12c8d004f03/circle.yml#L4)
+  - Public project? Using TravisCI, CircleCI or AppVeyor? You're all set! No upload token required.
+  - Otherwise please include your repository upload token. [See here](http://docs.codecov.io/v4.3.0/docs/about-the-codecov-bash-uploader#section-upload-token)
 
-This repository serves as an **example** on how to use [Codecov Global][4] for Java with a [Gradle][5] build script.
 
-## Usage
+## Frequently Asked Questions
 
+####❔ Do you support Multi-module projects?
 
-### Add Jacoco plugin
-Gradle ships with a [JaCoCo plugin][6]. Just add it to your `build.gradle`.
-```groovy
-apply plugin: 'jacoco'
-```
-
-And enable the `jacoco` XML report.
-```groovy
-jacocoTestReport {
-    reports {
-        xml.enabled true
-    }
-}
-```
-
-# Circle CI
-
-Add to your `circle.yml` file.
-```yml
-test:
-    post:
-        - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
-        - bash <(curl -s https://codecov.io/bash)
-```
-
-> Another option is our [Bash uploader][7]
-
-## Private Repos
-
-Add to your `.travis.yml` file.
-```yml
-test:
-    post:
-        - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
-        - bash <(curl -s https://codecov.io/bash) -t uuid-repo-token
-```
-
-View source and learn more about [Codecov Global Uploader][4]
-
-## Multi-module projects (exmple with Travis CI)
 Update your parent (root) `build.gradle`:
 ```groovy
 allprojects {
@@ -112,14 +77,7 @@ after_success:
 
 No need to have anything else report-related in child modules 
 
-[Credits for multi-module][8]
+[Credits for multi-module](https://csiebler.github.io/blog/2014/02/09/multi-project-code-coverage-using-gradle-and-jacoco/)
 
 
 [1]: https://codecov.io/
-[2]: https://twitter.com/codecov
-[3]: mailto:hello@codecov.io
-[4]: https://github.com/codecov/codecov-python
-[5]: http://gradle.org/
-[6]: https://docs.gradle.org/current/userguide/jacoco_plugin.html
-[7]: https://github.com/codecov/codecov-bash
-[8]: https://csiebler.github.io/blog/2014/02/09/multi-project-code-coverage-using-gradle-and-jacoco/
