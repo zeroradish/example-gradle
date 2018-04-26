@@ -79,5 +79,7 @@ No need to have anything else report-related in child modules
 
 [Credits for multi-module](https://csiebler.github.io/blog/2014/02/09/multi-project-code-coverage-using-gradle-and-jacoco/)
 
+We are happy to help if you have any questions. Please contact email our Support at [support@codecov.io](mailto:support@codecov.io)
+
 
 [1]: https://codecov.io/
