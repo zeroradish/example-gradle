@@ -1,19 +1,30 @@
-# [Codecov][1] Gradle Example
+# [Codecov](https://codecov.io) Gradle Example
 
+## Guide
+### Travis Setup
+
+Add to your `.travis.yml` file.
+```yml
+language: java
+jdk:
+  - oraclejdk8
+before_script:
+  - chmod +x gradlew
+script:
+  - ./gradlew check
+  - ./gradlew codeCoverageReport
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+```
+
+### Produce Coverage Reports
 1. Add Jacoco Plugin to your `build.gradle`. [See here](https://github.com/codecov/example-gradle/blob/master/build.gradle#L5)
-1. Set Jacoco to export xml. [See here](https://github.com/codecov/example-gradle/blob/master/build.gradle#L18-L23)
-1. Execute your tests as normal
-1. Call `gradle jacocoTestReport` to generate report. [See here](https://github.com/codecov/example-gradle/blob/65f88382659cf17c8693c3079941a12c8d004f03/circle.yml#L3)
-1. Call `bash <(curl -s https://codecov.io/bash)` to upload reports to Codecov. [See here](https://github.com/codecov/example-gradle/blob/65f88382659cf17c8693c3079941a12c8d004f03/circle.yml#L4)
-  - Public project? Using TravisCI, CircleCI or AppVeyor? You're all set! No upload token required.
-  - Otherwise please include your repository upload token. [See here](http://docs.codecov.io/v4.3.0/docs/about-the-codecov-bash-uploader#section-upload-token)
+2. Set Jacoco to export xml. [See here](https://github.com/codecov/example-gradle/blob/master/build.gradle#L18-L23)
+3. Execute your tests as normal
+4. Call `gradle jacocoTestReport` to generate report. [See here](https://github.com/codecov/example-gradle/blob/65f88382659cf17c8693c3079941a12c8d004f03/circle.yml#L3)
 
-## Frequently Asked Questions
-
-#### ❔ Do you support Multi-module projects?
-
-Update your parent (root) `build.gradle`:
-
+### FAQ
+- Q: Do you support Multi-module projects?<br/>A:Update your parent (root) `build.gradle`:
 ```groovy
 allprojects {
     apply plugin: 'java'
@@ -34,7 +45,7 @@ allprojects {
 
 subprojects {
     dependencies {
-        ...        
+        ...
     }
 
     test.useTestNG()
@@ -60,25 +71,11 @@ codeCoverageReport.dependsOn {
 }
 ```
 
-Update your `.travis.yml` file:
+## Caveats
+### Private Repo
+Repository tokens are required for (a) all private repos, (b) public repos not using Travis-CI, CircleCI or AppVeyor. Find your repository token at Codecov and provide via appending `-t <your upload token>` to you where you upload reports.
 
-```yml
-language: java
-jdk:
-  - oraclejdk8
-before_script:
-  - chmod +x gradlew
-script:
-  - ./gradlew check
-  - ./gradlew codeCoverageReport
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
-```
-
-No need to have anything else report-related in child modules 
-
-[Credits for multi-module](https://csiebler.github.io/blog/2014/02/09/multi-project-code-coverage-using-gradle-and-jacoco/)
-
-We are happy to help if you have any questions. Please contact email our Support at [support@codecov.io](mailto:support@codecov.io)
-
-[1]: https://codecov.io/
+## Links
+- [Community Boards](https://community.codecov.io)
+- [Support](https://codecov.io/support)
+- [Documentation](https://docs.codecov.io)
